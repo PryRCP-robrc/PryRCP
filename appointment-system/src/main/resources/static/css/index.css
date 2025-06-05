@@ -1,0 +1,227 @@
+    body.light-mode {
+        background-color: #ffffff;
+        color: #222;
+    }
+
+    body.light-mode .navbar {
+        background-color: #f8f9fa;
+    }
+
+    body.light-mode .navbar-brand {
+        color: #8e24aa !important;
+        text-shadow: none;
+    }
+
+    body.light-mode .nav-link {
+        color: #333 !important;
+    }
+
+    body.light-mode .nav-link:hover {
+        color: #8e24aa !important;
+    }
+
+    body.light-mode .hero-section {
+        background: linear-gradient(135deg, #8e24aa, #ff69b4);
+        color: white;
+    }
+
+    body.light-mode .btn-light {
+        background-color: #8e24aa;
+        color: white;
+    }
+
+    body.light-mode .card {
+        background-color: #f2f2f2;
+        color: #222;
+    }
+
+    body.light-mode footer {
+        background-color: #f8f9fa;
+        color: #666;
+    }
+
+    body {
+        background-color: #121212;
+        color: #f0f0f0;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .navbar {
+        background-color: #1e1e1e;
+        border-bottom: 1px solid #333;
+    }
+
+    .navbar-brand {
+        font-weight: bold;
+        color: #ff69b4 !important;
+        text-shadow: 0 0 5px #ff69b4;
+    }
+
+    .nav-link {
+        color: #ccc !important;
+    }
+
+    .nav-link:hover {
+        color: #ff69b4 !important;
+    }
+
+    .hero-section {
+        background: linear-gradient(135deg, #ff69b4, #8e24aa);
+        color: white;
+        border-radius: 12px;
+        box-shadow: 0 0 15px rgba(255, 105, 180, 0.5);
+    }
+
+    .btn-light {
+        background-color: white;
+        color: #ff69b4;
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-light:hover {
+        background-color: #ff69b4;
+        color: white;
+    }
+
+    .card {
+        background-color: #1f1f1f;
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(255, 105, 180, 0.1);
+    }
+
+    .card-title {
+        color: #ff69b4;
+    }
+
+    .text-primary {
+        color: #ff69b4 !important;
+    }
+
+    .step-number {
+        background-color: #ff69b4;
+        box-shadow: 0 0 10px rgba(255, 105, 180, 0.4);
+    }
+
+    .step-number span {
+        color: white;
+    }
+
+    footer {
+        background-color: #1e1e1e;
+        color: #aaa;
+    }
+
+    footer p {
+        margin: 0;
+    }
+
+    h1,
+    h2,
+    h5 {
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    /* ───────────────────────────────
+   ANIMACIONES Y TRANSICIONES
+   ─────────────────────────────── */
+
+/* 1. Suaviza los cambios de modo (dark / light) y desplazamientos */
+html,
+body,
+.navbar,
+footer,
+.hero-section,
+.card,
+.btn-light,
+.btn-gold {
+    transition: background-color .4s ease, color .4s ease, box-shadow .4s ease, transform .3s ease;
+}
+
+/* 2. Aparición inicial del documento */
+body {
+    animation: fadeInBody .7s ease-out both;
+}
+
+/* 3. Gradiente animado del hero */
+.hero-section {
+    background-size: 200% 200%;
+    animation: heroGradient 8s ease-in-out infinite alternate;
+}
+
+/* 4. Tarjetas con desplazamiento y “rebote” sutil al pasar el cursor */
+.card:hover {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 12px 25px rgba(255, 105, 180, .15); /* mismo tono pero más notorio */
+}
+
+/* 5. Botones con ligera escala y brillo */
+.btn-light:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 4px 12px rgba(255, 105, 180, .35);
+}
+
+/* 6. Numeración de pasos con pulso */
+.step-number {
+    animation: pulse 2.5s infinite ease-in-out;
+}
+
+/* 7. Enlaces del navbar deslizan subrayado */
+.nav-link {
+    position: relative;
+    overflow: hidden;
+}
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: currentColor;
+    transform: translateX(-100%);
+    transition: transform .3s ease;
+}
+.nav-link:hover::after {
+    transform: translateX(0);
+}
+
+/* ───────────────────────────────
+   KEYFRAMES
+   ─────────────────────────────── */
+
+/* Fade-in general */
+@keyframes fadeInBody {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Pulso sutil para elementos destacados */
+@keyframes pulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 10px rgba(255, 105, 180, .4); }
+    50%      { transform: scale(1.08); box-shadow: 0 0 18px rgba(255, 105, 180, .55); }
+}
+
+/* Desplazamiento del gradiente de la hero-section */
+@keyframes heroGradient {
+    0%   { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}
+
+/* ───────────────────────────────
+   ACCESIBILIDAD: “prefers-reduced-motion”
+   ─────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .001ms !important;
+    }
+}
