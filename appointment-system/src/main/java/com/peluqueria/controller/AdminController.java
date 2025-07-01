@@ -2,8 +2,10 @@ package com.peluqueria.controller;
 
 import com.peluqueria.entity.Cita;
 import com.peluqueria.entity.Peluquero;
+import com.peluqueria.entity.Rol;
 import com.peluqueria.service.CitaService;
 import com.peluqueria.service.PeluqueroService;
+import com.peluqueria.service.RolService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +25,9 @@ public class AdminController {
 
     @Autowired
     private PeluqueroService peluqueroService;
+
+    @Autowired
+    private RolService rolService;
 
     @GetMapping("/login")
     public String mostrarLogin(@RequestParam(value = "error", required = false) String error,
@@ -136,4 +141,48 @@ public class AdminController {
         }
         return "redirect:/admin/dashboard#peluqueros";
     }
+
+    // --------------------
+    // GESTIÓN DE ROLES
+    // --------------------
+
+    // Crear Rol
+    @PostMapping("/dashboard/rol")
+    public String crearRol(@RequestParam String nombre, RedirectAttributes redirectAttributes) {
+        Rol nuevo = new Rol();
+        nuevo.setNombre(nombre);
+        rolService.crear(nuevo);
+        redirectAttributes.addFlashAttribute("mensajeRol", "Rol creado correctamente");
+        return "redirect:/admin/dashboard#roles";
+    }
+
+    // Actualizar Rol
+    @PostMapping("/dashboard/rol/{id}")
+    public String actualizarRol(@PathVariable Long id,
+            @RequestParam String nombre,
+            RedirectAttributes redirectAttributes) {
+        Rol actualizado = new Rol();
+        actualizado.setNombre(nombre);
+        Optional<Rol> resultado = rolService.actualizar(id, actualizado);
+        if (resultado.isPresent()) {
+            redirectAttributes.addFlashAttribute("mensajeRol", "Rol actualizado correctamente");
+        } else {
+            redirectAttributes.addFlashAttribute("mensajeRol", "Error al actualizar: Rol no encontrado");
+        }
+        return "redirect:/admin/dashboard#roles";
+    }
+
+    // Eliminar Rol
+    @GetMapping("/dashboard/rol/eliminar/{id}")
+    public String eliminarRol(@PathVariable Long id,
+            RedirectAttributes redirectAttributes) {
+        boolean eliminado = rolService.eliminar(id);
+        if (eliminado) {
+            redirectAttributes.addFlashAttribute("mensajeRol", "Rol eliminado correctamente");
+        } else {
+            redirectAttributes.addFlashAttribute("errorRol", "Error al eliminar: Rol no encontrado");
+        }
+        return "redirect:/admin/dashboard#roles";
+    }
+
 }
