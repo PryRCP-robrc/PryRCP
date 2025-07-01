@@ -204,4 +204,9 @@ public class CitaService {
     private String generarNumeroBoleta() {
         return "B" + String.format("%08d", System.currentTimeMillis() % 100000000);
     }
+
+    public int contarPorEstado(Cita.EstadoCita estado) {
+        return citaRepository.countByEstado(estado);
+    }
+
 }
