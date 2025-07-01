@@ -51,6 +51,9 @@ public class AdminController {
         List<Peluquero> peluqueros = peluqueroService.obtenerPeluquerosActivos();
         model.addAttribute("peluqueros", peluqueros);
 
+        List<Rol> roles = rolService.listarTodos();
+        model.addAttribute("roles", roles);
+
         // Puedes agregar aquí estadísticas/resúmenes si quieres
         model.addAttribute("totalCitas", citas.size());
         model.addAttribute("citasCanceladas", citaService.contarPorEstado(Cita.EstadoCita.CANCELADA));
