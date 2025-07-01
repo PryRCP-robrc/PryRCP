@@ -63,15 +63,22 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <div class="navbar-nav ms-auto">
+                <div class="navbar-nav ms-auto align-items-center">
                     <a class="nav-link" href="/">Inicio</a>
                     <a class="nav-link" href="/citas/agendar">Agendar Cita</a>
-                    <a class="nav-link active" href="/contacto">Contacto</a>
-                    <a class="nav-link active" href="/servicios">Servicios</a>
+                    <a class="nav-link" href="/contacto">Contacto</a>
+                    <a class="nav-link" href="/servicios">Servicios</a>
+
+                    <!-- Botones de acceso -->
+                    <a class="btn btn-outline-primary btn-sm ms-3" th:href="@{/cliente-login}">Iniciar sesión</a>
+                    <a class="btn btn-primary btn-sm ms-2" th:href="@{/cliente-registro}">Registrarse</a>
+
+                    <!-- Botón de modo -->
                     <button id="modoToggle" class="btn btn-outline-light ms-3" style="border: #121212;">
                         <i class="fas fa-moon"></i>
                     </button>
                 </div>
+
             </div>
         </div>
     </nav>

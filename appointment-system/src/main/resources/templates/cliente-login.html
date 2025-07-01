@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>Iniciar Sesión - Cliente</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/index.css">
+
+  <style>
+        /* Estilos globales - modo oscuro por defecto */
+        body {
+            background-color: #121212;
+            /* fondo oscuro */
+            color: #f0f0f0;
+            /* texto claro */
+            font-family: 'Segoe UI', sans-serif;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        .navbar {
+            background-color: #1e1e1e;
+            border-bottom: 1px solid #333;
+            transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
+
+        .footer {
+            background-color: #1e1e1e;
+            color: #aaa;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        /* Navbar brand */
+        .navbar-brand {
+            font-weight: bold;
+            color: #ff69b4 !important;
+            transition: color 0.4s ease;
+        }
+
+        /* Botones primarios */
+        .btn-primary {
+            background-color: #ff69b4;
+            border-color: #ff69b4;
+            color: white;
+            transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #8e24aa;
+            border-color: #8e24aa;
+            color: white;
+        }
+
+        /* Card y formulario */
+        .card {
+            background-color: #1e1e1e;
+            color: #ccc;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 105, 180, 0.1);
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        .card-header {
+            background-color: #1e1e1e;
+            border-bottom: 2px solid #ff69b4;
+            color: #ccc;
+            transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease;
+        }
+
+        .card-body {
+            color: #ccc;
+        }
+
+        /* Inputs */
+        input.form-control {
+            background-color: #333;
+            color: #eee;
+            border: 1px solid #555;
+            transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+        }
+
+        input.form-control:focus {
+            background-color: #444;
+            border-color: #ff69b4;
+            color: white;
+            outline: none;
+            box-shadow: 0 0 5px #ff69b4;
+        }
+
+        /* Indicadores de paso */
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            /* Permite que se ajusten en pantallas pequeñas */
+            gap: 10px;
+        }
+
+        .step {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #ccc;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        .step.active {
+            background-color: #ff69b4;
+            color: white;
+        }
+
+        .step.completed {
+            background-color: #28a745;
+            color: white;
+        }
+
+        /* ───────────────────────────────
+           Modo claro con clase .light-mode
+        ──────────────────────────────── */
+
+        body.light-mode {
+            background-color: #ffffff;
+            /* fondo blanco */
+            color: #222;
+            /* texto oscuro */
+        }
+
+        body.light-mode .navbar {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #ccc;
+        }
+
+        body.light-mode .footer {
+            background-color: #f8f9fa;
+            color: #666;
+        }
+
+        body.light-mode .navbar-brand {
+            color: #8e24aa !important;
+        }
+
+        body.light-mode .btn-primary {
+            background-color: #8e24aa;
+            border-color: #8e24aa;
+            color: white;
+        }
+
+        body.light-mode .btn-primary:hover {
+            background-color: #ff69b4;
+            border-color: #ff69b4;
+            color: white;
+        }
+
+        body.light-mode .card {
+            background-color: #f8f9fa;
+            color: #222;
+            box-shadow: none;
+        }
+
+        body.light-mode .card-header {
+            background-color: #f8f9fa;
+            border-bottom: 2px solid #8e24aa;
+            color: #222;
+        }
+
+        body.light-mode .card-body {
+            color: #222;
+        }
+
+        body.light-mode input.form-control {
+            background-color: white;
+            color: #222;
+            border: 1px solid #ccc;
+        }
+
+        body.light-mode input.form-control:focus {
+            background-color: white;
+            border-color: #8e24aa;
+            color: #222;
+            box-shadow: 0 0 5px #8e24aa;
+        }
+
+        body.light-mode .step {
+            background-color: #dee2e6;
+            color: #222;
+        }
+
+        body.light-mode .step.active {
+            background-color: #8e24aa;
+            color: white;
+        }
+
+        body.light-mode .step.completed {
+            background-color: #28a745;
+            color: white;
+        }
+
+        /* Transiciones para suavizar cambios globales y específicos */
+        body,
+        .navbar,
+        .footer,
+        .navbar-brand,
+        .btn-primary,
+        .card,
+        .card-header,
+        .card-body,
+        input.form-control,
+        .step {
+            transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        /* Responsive adjustments */
+        main {
+            padding: 1rem;
+        }
+
+        /* Adaptar columnas para móviles: ancho completo */
+        .col-md-8 {
+            width: 100%;
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        /* Alternativamente, usa Bootstrap grid responsive para inputs */
+        .col-md-6 {
+            width: 100%;
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+        }
+
+        @media(min-width: 768px) {
+            .col-md-6 {
+                width: 50%;
+            }
+
+            .col-md-8 {
+                width: 66.66667%;
+            }
+        }
+
+        /* Botones apilados en móviles */
+        .btn-group-responsive {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        @media(min-width: 768px) {
+            .btn-group-responsive {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+        }
+
+        .btn-outline-primary {
+            border-color: #ff69b4;
+            color: #ff69b4;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: #ff69b4;
+            color: white;
+        }
+
+        h2 {
+            color: #ff69b4;
+            font-weight: bold;
+            font-size: 1.75rem;
+            text-shadow: 1px 1px 2px rgba(255, 105, 180, 0.2);
+        }
+
+        /* Título en modo oscuro */
+        .form-title {
+            color: #f0f0f0;
+            font-weight: bold;
+            font-size: 1.75rem;
+            text-shadow: 1px 1px 2px rgba(255, 105, 180, 0.2);
+        }
+
+        /* Título en modo claro */
+        body.light-mode .form-title {
+            color: #222;
+            text-shadow: none;
+        }
+    </style>
+</head>
+<body>
+
+    <nav id="mainNav" class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-cut"></i> Rossy
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="navbar-nav ms-auto">
+                    <button id="modoToggle" class="btn btn-outline-light ms-3" style="border: #121212;">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+  <section class="hero-section py-5">
+    <div class="container">
+      <div class="card p-4" style="max-width: 500px; margin: auto;">
+        <h2 class="form-title text-center mb-4">Iniciar Sesión</h2>
+
+        <form th:action="@{/cliente-login}" method="post">
+          <div class="form-group mb-3">
+            <label>Correo electrónico</label>
+            <input type="email" name="username" class="form-control" required />
+          </div>
+
+          <div class="form-group mb-4">
+            <label>Contraseña</label>
+            <input type="password" name="password" class="form-control" required />
+          </div>
+
+          <div class="d-flex justify-content-between">
+            <a th:href="@{/}" class="btn btn-outline-secondary">Cancelar</a>
+            <button type="submit" class="btn btn-primary">Entrar</button>
+          </div>
+        </form>
+
+        <div class="text-center mt-4">
+          <span>¿No tienes una cuenta?</span>
+          <a th:href="@{/cliente-registro}" class="btn btn-sm btn-outline-primary ms-2">Regístrate</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const toggleBtn = document.getElementById('modoToggle');
+            const icon = toggleBtn.querySelector('i');
+            const body = document.body;
+            const nav = document.getElementById('mainNav');  // captura el nav
+
+            // Función para actualizar estilos del botón y navbar según el modo
+            function actualizarBoton() {
+                const modoClaro = body.classList.contains('light-mode');
+
+                // Cambiar clases botón
+                toggleBtn.classList.toggle('btn-outline-light', !modoClaro);
+
+                toggleBtn.classList.toggle('btn-outline-dark', modoClaro);
+
+                icon.classList.toggle('fa-moon', !modoClaro);
+                icon.classList.toggle('fa-sun', modoClaro);
+
+                // Cambiar clases navbar para modo claro / oscuro
+                if (modoClaro) {
+                    nav.classList.remove('navbar-dark', 'bg-dark');
+                    nav.classList.add('navbar-light', 'bg-light');
+                } else {
+                    nav.classList.remove('navbar-light', 'bg-light');
+                    nav.classList.add('navbar-dark', 'bg-dark');
+                }
+            }
+
+            // Al cargar: aplica preferencia guardada
+            const savedMode = localStorage.getItem('modo');
+            if (savedMode === 'claro') {
+                body.classList.add('light-mode');
+            }
+            actualizarBoton();
+
+            // Al hacer clic en el botón
+            toggleBtn.addEventListener('click', () => {
+                body.classList.toggle('light-mode');
+                const modoClaro = body.classList.contains('light-mode');
+                localStorage.setItem('modo', modoClaro ? 'claro' : 'oscuro');
+                actualizarBoton();
+            });
+
+        });
+    </script>
+</body>
+</html>
