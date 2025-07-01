@@ -9,6 +9,7 @@ function actualizarBoton() {
 
   // Cambiar clases botón
   toggleBtn.classList.toggle('btn-outline-light', !modoClaro);
+  
   toggleBtn.classList.toggle('btn-outline-dark', modoClaro);
 
   icon.classList.toggle('fa-moon', !modoClaro);

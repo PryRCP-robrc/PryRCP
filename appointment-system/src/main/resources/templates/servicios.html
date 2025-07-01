@@ -16,29 +16,36 @@
 </head>
 
 <body>
-    <nav id="mainNav" class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav id="mainNav" class="navbar navbar-expand-lg navbar-light bg-light">
 
-        <div class="container">
-            <a class="navbar-brand" href="/">
-                <i class="fas fa-cut"></i> Rossy
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <div class="navbar-nav ms-auto">
-                    <a class="nav-link" href="/">Inicio</a>
-                    <a class="nav-link" href="/citas/agendar">Agendar Cita</a>
-                    <a class="nav-link active" href="/contacto">Contacto</a>
-                    <a class="nav-link active" href="/servicios">Servicios</a>
-                    <button id="modoToggle" class="btn btn-outline-light ms-3" style="border: #121212;">
-                        <i class="fas fa-moon"></i>
-                    </button>
-                </div>
-            </div>
+    <div class="container">
+      <a class="navbar-brand" href="/">
+        <i class="fas fa-cut"></i> Rossy
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="navbar-nav ms-auto align-items-center">
+          <a class="nav-link" href="/">Inicio</a>
+          <a class="nav-link" href="/citas/agendar">Agendar Cita</a>
+          <a class="nav-link" href="/contacto">Contacto</a>
+          <a class="nav-link" href="/servicios">Servicios</a>
+
+          <!-- Botones de acceso -->
+          <a class="btn btn-outline-primary btn-sm ms-3" th:href="@{/cliente-login}">Iniciar sesión</a>
+          <a class="btn btn-primary btn-sm ms-2" th:href="@{/cliente-registro}">Registrarse</a>
+
+          <!-- Botón de modo -->
+          <button id="modoToggle" class="btn btn-outline-light ms-3" style="border: #121212;">
+            <i class="fas fa-moon"></i>
+          </button>
         </div>
-    </nav>
+
+      </div>
+    </div>
+  </nav>
 
   <main class="container my-5">
     <div class="row g-4 justify-content-start">
