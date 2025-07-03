@@ -3,16 +3,20 @@ package com.peluqueria.controller;
 import com.peluqueria.entity.Cita;
 import com.peluqueria.entity.Peluquero;
 import com.peluqueria.entity.Rol;
+import com.peluqueria.entity.Servicio;
 import com.peluqueria.service.CitaService;
 import com.peluqueria.service.PeluqueroService;
 import com.peluqueria.service.RolService;
+import com.peluqueria.service.ServicioService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.service.annotation.PatchExchange;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +32,9 @@ public class AdminController {
 
     @Autowired
     private RolService rolService;
+
+    @Autowired
+    private ServicioService servicioService;
 
     @GetMapping("/login")
     public String mostrarLogin(@RequestParam(value = "error", required = false) String error,
@@ -50,6 +57,9 @@ public class AdminController {
 
         List<Peluquero> peluqueros = peluqueroService.obtenerPeluquerosActivos();
         model.addAttribute("peluqueros", peluqueros);
+
+        List<Servicio> servicios = servicioService.obtenerServiciosActivos();
+        model.addAttribute("servicios", servicios);
 
         List<Rol> roles = rolService.listarTodos();
         model.addAttribute("roles", roles);
@@ -186,6 +196,66 @@ public class AdminController {
             redirectAttributes.addFlashAttribute("errorRol", "Error al eliminar: Rol no encontrado");
         }
         return "redirect:/admin/dashboard#roles";
+    }
+
+    // --------------------
+    // GESTIÓN DE SERVICIOS
+    // --------------------
+
+    @PostMapping("/dashboard/servicio")
+    public String crearServicio(@RequestParam String nombre,
+            @RequestParam String descripcion,
+            @RequestParam BigDecimal precio,
+            @RequestParam Integer duracionMinutos,
+            RedirectAttributes redirectAttributes){
+        Servicio nuevo = new Servicio();
+        nuevo.setNombre(nombre);
+        nuevo.setDescripcion(descripcion);
+        nuevo.setPrecio(null);
+        nuevo.setDuracionMinutos(null);
+        nuevo.setActivo(true);
+
+        servicioService.crear(nuevo);
+        redirectAttributes.addFlashAttribute("mensajeServicio", "Servicio creado correctamente");
+        return "redirect:/admin/dashboard#servicios";
+    }
+
+    // Actualizar Servicio
+    @PostMapping("/dashboard/servicio/{id}")
+    public String actualizarServicio(@PathVariable long id,
+            @RequestParam String nombre,
+            @RequestParam String descripcion,
+            @RequestParam BigDecimal precio,
+            @RequestParam String duracionMinutos,
+            RedirectAttributes redirectAttributes){
+        Servicio actualizado = new Servicio();
+        actualizado.setNombre(nombre);
+        actualizado.setDescripcion(descripcion);
+        actualizado.setPrecio(null);
+        actualizado.setDuracionMinutos(null);
+        actualizado.setActivo(true);
+
+        Optional<Servicio> resultado = servicioService.actualizar(id, actualizado);
+
+        if(resultado.isPresent()){
+            redirectAttributes.addFlashAttribute("mensajeServicio", "Servicio Actualizado Correctamente");
+        }else{
+            redirectAttributes.addFlashAttribute("errorServicio", "Error al actualizar: Servicio no encontrado");
+        }
+        return "redirect:/admin/dashboard#servicios";
+    } 
+
+    // Eliminar Servicio
+    @GetMapping("/dashboard/servicio/eliminar/{id}")
+    public String eliminarServicio(@PathVariable long id,
+            RedirectAttributes redirectAttributes){
+        boolean eliminado=servicioService.eliminar(id);
+        if(eliminado){
+            redirectAttributes.addFlashAttribute("mensajeServicio", "Servicio Eliminado Correctamente");
+        }else{
+            redirectAttributes.addFlashAttribute("errorServicio", "Error al eliminar: Servicio no encontrado");
+        }
+        return "redirect:/admin/dashboard#servicios";
     }
 
 }

@@ -440,6 +440,42 @@
         </div>
     </div>
 
+    <!-- Modal Servicio -->
+    <div class="modal fade" id="modalServicio" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="formServicio" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="tituloModal">Nuevo Servicio</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="id" id="servicioId">
+                        <div class="mb-3">
+                            <label for="nombreServicio" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" name="nombre" id="nombreServicio" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="descripcionServicio" class="form-label">Descripcion</label>
+                            <input type="text" class="form-control" name="Descripcion" id="descripcionServicio" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="precioServicio" class="form-label">Precio</label>
+                            <input type="text" class="form-control" name="Precio" id="precioServicio" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="duracionServicio" class="form-label">Duracion</label>
+                            <input type="text" class="form-control" name="Duracion" id="duracionServicio" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
 
 
@@ -505,7 +541,30 @@
 
 
     </script>
+    <script>
+        function abrirModalNuevoServicio() {
+            document.getElementById('tituloModal').innerText = 'Nuevo Servicio';
+            document.getElementById('formServicio').action = '/admin/dashboard/servicio';
+            document.getElementById('servicioId').value = '';
+            document.getElementById('nombreServicio').value = '';
+            document.getElementById('descripcionServicio').value = '';
+            document.getElementById('precioServicio').value = '';
+            document.getElementById('duracionServicio').value = '';
+            new bootstrap.Modal(document.getElementById('modalServicio')).show();
+        }
 
+
+        function abrirModalEditarServicio(id, nombre, descripcion, precio, duracion) {
+            document.getElementById('tituloModal').innerText = 'Editar Servicio';
+            document.getElementById('formServicio').action = '/admin/dashboard/servicio/' + id;
+            document.getElementById('servicioId').value = id;
+            document.getElementById('nombreServicio').value = nombre;
+            document.getElementById('descripcionServicio').value = descripcion;
+            document.getElementById('precioServicio').value = precio;
+            document.getElementById('duracionServicio').value = duracion;
+            new bootstrap.Modal(document.getElementById('modalServicio')).show();
+        }
+    </script>
 
     <script>
         function abrirModalNuevoRol() {
