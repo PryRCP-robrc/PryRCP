@@ -26,7 +26,7 @@ public class ClienteController {
     // Procesar registro
     @PostMapping("/cliente-registro")
     public String registrarCliente(@ModelAttribute Cliente cliente) {
-    clienteService.registrarCliente(cliente); // ← usa este
+    clienteService.registrarCliente(cliente); 
         return "redirect:/cliente-login";
 }
 

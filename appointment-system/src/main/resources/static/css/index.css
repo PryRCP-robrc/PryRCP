@@ -225,3 +225,11 @@ body {
         transition-duration: .001ms !important;
     }
 }
+
+[data-bs-theme="light"] .saludo-usuario {
+  color: #212529; /* texto negro en modo claro */
+}
+
+[data-bs-theme="dark"] .saludo-usuario {
+  color: #ffffff; /* texto blanco en modo oscuro */
+}

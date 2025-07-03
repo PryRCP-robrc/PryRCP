@@ -69,17 +69,28 @@
                     <a class="nav-link" href="/contacto">Contacto</a>
                     <a class="nav-link" href="/servicios">Servicios</a>
 
-                    <!-- Botones de acceso -->
-                    <a class="btn btn-outline-primary btn-sm ms-3" th:href="@{/cliente-login}">Iniciar sesión</a>
-                    <a class="btn btn-primary btn-sm ms-2" th:href="@{/cliente-registro}">Registrarse</a>
-
-                    <!-- Botón de modo -->
-                    <button id="modoToggle" class="btn btn-outline-light ms-3" style="border: #121212;">
-                        <i class="fas fa-moon"></i>
-                    </button>
+                    <!-- Botones según estado de autenticación -->
+                    <!-- Si está autenticado, mostrar saludo y botón de logout -->
+                    <div th:if="${nombreCompleto != null}"
+                    class="d-flex align-items-center ms-4 ps-3 border-start border-secondary">
+                    <span class="me-4 saludo-usuario">Bienvenido(a), <strong
+                            th:text="${nombreCompleto}">Usuario</strong></span>
+                    <a th:href="@{/logout}" class="btn btn-outline-danger btn-sm">Cerrar sesión</a>
                 </div>
 
+                <!-- Si NO está autenticado, mostrar botones de acceso -->
+                <div th:unless="${#authorization.expression('isAuthenticated()')}" class="d-flex">
+                    <a class="btn btn-outline-primary btn-sm ms-3" th:href="@{/cliente-login}">Iniciar sesión</a>
+                    <a class="btn btn-primary btn-sm ms-2" th:href="@{/cliente-registro}">Registrarse</a>
+                </div>
+
+                <!-- Botón de modo -->
+                <button id="modoToggle" class="btn btn-outline-light ms-3" style="border: #121212;">
+                    <i class="fas fa-moon"></i>
+                </button>
             </div>
+
+        </div>
         </div>
     </nav>
 
