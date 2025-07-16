@@ -1,5 +1,6 @@
 package com.peluqueria.controller;
 
+
 import com.peluqueria.entity.Cita;
 import com.peluqueria.entity.Peluquero;
 import com.peluqueria.entity.Rol;
@@ -9,31 +10,39 @@ import com.peluqueria.service.PeluqueroService;
 import com.peluqueria.service.RolService;
 import com.peluqueria.service.ServicioService;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
 
+
     @Autowired
     private CitaService citaService;
+
 
     @Autowired
     private PeluqueroService peluqueroService;
 
+
     @Autowired
     private RolService rolService;
 
+
     @Autowired
     private ServicioService servicioService;
+
 
     @GetMapping("/login")
     public String mostrarLogin(@RequestParam(value = "error", required = false) String error,
@@ -48,20 +57,27 @@ public class AdminController {
         return "admin-login";
     }
 
+
     @GetMapping("/dashboard")
     public String mostrarDashboard(@RequestParam(value = "codigo", required = false) String codigo,
             Model model) {
         List<Cita> citas = citaService.obtenerTodasLasCitas();
         model.addAttribute("citas", citas);
 
+
         List<Peluquero> peluqueros = peluqueroService.obtenerPeluquerosActivos();
         model.addAttribute("peluqueros", peluqueros);
 
-        List<Servicio> servicios = servicioService.obtenerServiciosActivos();
-        model.addAttribute("servicios", servicios);
 
         List<Rol> roles = rolService.listarTodos();
         model.addAttribute("roles", roles);
+
+
+        List<Servicio> servicios = servicioService.obtenerTodos();
+        model.addAttribute("servicios", servicios);
+
+
+
 
         // Puedes agregar aquí estadísticas/resúmenes si quieres
         model.addAttribute("totalCitas", citas.size());
@@ -69,15 +85,19 @@ public class AdminController {
         model.addAttribute("citasTerminadas", citaService.contarPorEstado(Cita.EstadoCita.TERMINADA));
         model.addAttribute("citasProgramadas", citaService.contarPorEstado(Cita.EstadoCita.PROGRAMADA));
 
+
         return "admin-dashboard";
     }
+
 
     @PostMapping("/verificar")
     public String verificarDesdeFormulario(@RequestParam String codigo, RedirectAttributes redirectAttributes) {
         Optional<Cita> citaOpt = citaService.buscarPorCodigo(codigo);
 
+
         if (citaOpt.isPresent()) {
             Cita cita = citaOpt.get();
+
 
             cita.getCliente().getNombreCompleto(); // fuerza la carga
             redirectAttributes.addFlashAttribute("citaEncontrada", cita);
@@ -85,8 +105,10 @@ public class AdminController {
             redirectAttributes.addFlashAttribute("error", "No se encontró ninguna cita con ese código" + " " + codigo);
         }
 
+
         return "redirect:/admin/dashboard";
     }
+
 
     @PostMapping("/cambiar-estado/{citaId}")
     public String cambiarEstadoCita(@PathVariable Long citaId,
@@ -95,9 +117,11 @@ public class AdminController {
         return "redirect:/admin/dashboard";
     }
 
+
     // -----------------------
     // GESTIÓN DE PELUQUEROS
     // -----------------------
+
 
     // Crear Peluquero
     @PostMapping("/dashboard/peluquero")
@@ -111,10 +135,12 @@ public class AdminController {
         nuevo.setEspecialidad(especialidad);
         nuevo.setActivo(true);
 
+
         peluqueroService.crear(nuevo);
         redirectAttributes.addFlashAttribute("mensajePeluquero", "Peluquero creado correctamente");
         return "redirect:/admin/dashboard#peluqueros";
     }
+
 
     // Actualizar Peluquero
     @PostMapping("/dashboard/peluquero/{id}")
@@ -130,7 +156,9 @@ public class AdminController {
         actualizado.setEspecialidad(especialidad);
         actualizado.setActivo(activo);
 
+
         Optional<Peluquero> resultado = peluqueroService.actualizar(id, actualizado);
+
 
         if (resultado.isPresent()) {
             redirectAttributes.addFlashAttribute("mensajePeluquero", "Peluquero actualizado correctamente");
@@ -138,8 +166,10 @@ public class AdminController {
             redirectAttributes.addFlashAttribute("errorPeluquero", "Error al actualizar: Peluquero no encontrado");
         }
 
+
         return "redirect:/admin/dashboard#peluqueros";
     }
+
 
     // Eliminar Peluquero
     @GetMapping("/dashboard/peluquero/eliminar/{id}")
@@ -154,9 +184,11 @@ public class AdminController {
         return "redirect:/admin/dashboard#peluqueros";
     }
 
+
     // --------------------
     // GESTIÓN DE ROLES
     // --------------------
+
 
     // Crear Rol
     @PostMapping("/dashboard/rol")
@@ -167,6 +199,7 @@ public class AdminController {
         redirectAttributes.addFlashAttribute("mensajeRol", "Rol creado correctamente");
         return "redirect:/admin/dashboard#roles";
     }
+
 
     // Actualizar Rol
     @PostMapping("/dashboard/rol/{id}")
@@ -184,6 +217,7 @@ public class AdminController {
         return "redirect:/admin/dashboard#roles";
     }
 
+
     // Eliminar Rol
     @GetMapping("/dashboard/rol/eliminar/{id}")
     public String eliminarRol(@PathVariable Long id,
@@ -197,64 +231,79 @@ public class AdminController {
         return "redirect:/admin/dashboard#roles";
     }
 
+
     // --------------------
     // GESTIÓN DE SERVICIOS
     // --------------------
 
+
+    // Crear Servicio
     @PostMapping("/dashboard/servicio")
     public String crearServicio(@RequestParam String nombre,
             @RequestParam String descripcion,
             @RequestParam BigDecimal precio,
             @RequestParam Integer duracionMinutos,
-            RedirectAttributes redirectAttributes){
+            RedirectAttributes redirectAttributes) {
         Servicio nuevo = new Servicio();
         nuevo.setNombre(nombre);
         nuevo.setDescripcion(descripcion);
-        nuevo.setPrecio(null);
-        nuevo.setDuracionMinutos(null);
+        nuevo.setPrecio(precio);
+        nuevo.setDuracionMinutos(duracionMinutos);
         nuevo.setActivo(true);
+
 
         servicioService.crear(nuevo);
         redirectAttributes.addFlashAttribute("mensajeServicio", "Servicio creado correctamente");
         return "redirect:/admin/dashboard#servicios";
     }
 
+
     // Actualizar Servicio
     @PostMapping("/dashboard/servicio/{id}")
-    public String actualizarServicio(@PathVariable long id,
+    public String actualizarServicio(@PathVariable Long id,
             @RequestParam String nombre,
             @RequestParam String descripcion,
             @RequestParam BigDecimal precio,
-            @RequestParam String duracionMinutos,
-            RedirectAttributes redirectAttributes){
+            @RequestParam Integer duracionMinutos,
+            @RequestParam(required = false, defaultValue = "true") boolean activo,
+            RedirectAttributes redirectAttributes) {
         Servicio actualizado = new Servicio();
         actualizado.setNombre(nombre);
         actualizado.setDescripcion(descripcion);
-        actualizado.setPrecio(null);
-        actualizado.setDuracionMinutos(null);
-        actualizado.setActivo(true);
+        actualizado.setPrecio(precio);
+        actualizado.setDuracionMinutos(duracionMinutos);
+        actualizado.setActivo(activo);
 
-        Optional<Servicio> resultado = servicioService.actualizar(id, actualizado);
 
-        if(resultado.isPresent()){
-            redirectAttributes.addFlashAttribute("mensajeServicio", "Servicio Actualizado Correctamente");
-        }else{
-            redirectAttributes.addFlashAttribute("errorServicio", "Error al actualizar: Servicio no encontrado");
+        try {
+            servicioService.actualizar(id, actualizado);
+            redirectAttributes.addFlashAttribute("mensajeServicio", "Servicio actualizado correctamente");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorServicio", "Error al actualizar el servicio: " + e.getMessage());
         }
-        return "redirect:/admin/dashboard#servicios";
-    } 
 
-    // Eliminar Servicio
-    @GetMapping("/dashboard/servicio/eliminar/{id}")
-    public String eliminarServicio(@PathVariable long id,
-            RedirectAttributes redirectAttributes){
-        boolean eliminado=servicioService.eliminar(id);
-        if(eliminado){
-            redirectAttributes.addFlashAttribute("mensajeServicio", "Servicio Eliminado Correctamente");
-        }else{
-            redirectAttributes.addFlashAttribute("errorServicio", "Error al eliminar: Servicio no encontrado");
-        }
+
         return "redirect:/admin/dashboard#servicios";
     }
 
+
+    // Eliminar Servicio
+    @GetMapping("/dashboard/servicio/eliminar/{id}")
+    public String eliminarServicio(@PathVariable Long id,
+            RedirectAttributes redirectAttributes) {
+        try {
+            servicioService.eliminar(id);
+            redirectAttributes.addFlashAttribute("mensajeServicio", "Servicio eliminado correctamente");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorServicio", "Error al eliminar el servicio: " + e.getMessage());
+        }
+
+
+        return "redirect:/admin/dashboard#servicios";
+    }
+
+
 }
+
+
+
