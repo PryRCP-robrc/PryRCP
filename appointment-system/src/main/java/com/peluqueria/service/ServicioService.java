@@ -3,59 +3,74 @@ package com.peluqueria.service;
 
 import com.peluqueria.entity.Servicio;
 import com.peluqueria.repository.ServicioRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import java.util.List;
 import java.util.Optional;
 
+
 @Service
-@Transactional(readOnly = true)
+@Transactional()
 public class ServicioService {
-    
+
+
     @Autowired
     private ServicioRepository servicioRepository;
-    
-    public List<Servicio> obtenerServiciosActivos() {
-        return servicioRepository.findByActivoTrue();
-    }
-    
-    public Optional<Servicio> buscarPorId(Long id) {
-        return servicioRepository.findById(id);
-    }
-    
+
+
+    // Obtener todos los servicios
     public List<Servicio> obtenerTodos() {
         return servicioRepository.findAll();
     }
 
-    // Crear un nuevo Servicio
-    public Servicio crear(Servicio servicio){
-        servicio.setId(null);
-        servicio.setActivo(true);
+
+    // Obtener solo servicios activos
+    public List<Servicio> obtenerServiciosActivos() {
+        return servicioRepository.findByActivoTrue();
+    }
+
+
+    // Buscar por ID
+    public Optional<Servicio> buscarPorId(Long id) {
+        return servicioRepository.findById(id);
+    }
+
+
+    // Crear un nuevo servicio
+    @Transactional
+    public Servicio crear(Servicio servicio) {
         return servicioRepository.save(servicio);
     }
 
 
-    //Actualizar un Servicio
-    public Optional<Servicio> actualizar (long id, Servicio datosActualizados){
-        return servicioRepository.findById(id).map(servicio ->{
-            servicio.setNombre(datosActualizados.getNombre());
-            servicio.setDescripcion(datosActualizados.getDescripcion());
-            servicio.setPrecio(datosActualizados.getPrecio());
-            servicio.setDuracionMinutos(datosActualizados.getDuracionMinutos());
-            servicio.setActivo(datosActualizados.getActivo());
-            return servicioRepository.save(servicio);
-        });
+    // Actualizar un servicio existente
+    @Transactional
+    public Servicio actualizar(Long id, Servicio servicioActualizado) {
+        Servicio existente = servicioRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Servicio no encontrado con ID: " + id));
+
+
+        existente.setNombre(servicioActualizado.getNombre());
+        existente.setDescripcion(servicioActualizado.getDescripcion());
+        existente.setPrecio(servicioActualizado.getPrecio());
+        existente.setDuracionMinutos(servicioActualizado.getDuracionMinutos());
+        existente.setActivo(servicioActualizado.getActivo());
+
+
+        return servicioRepository.save(existente);
     }
 
-    //Eliminar un servicio por ID
-    public boolean eliminar(long id){
-        if(servicioRepository.existsById(id)){
-            servicioRepository.deleteById(id);
-            return true;
-        }else{
-            return false;
+
+    // Eliminar un servicio por ID
+    @Transactional
+    public void eliminar(Long id) {
+        if (!servicioRepository.existsById(id)) {
+            throw new EntityNotFoundException("Servicio no encontrado con ID: " + id);
         }
+        servicioRepository.deleteById(id);
     }
 }
