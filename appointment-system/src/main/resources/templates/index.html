@@ -35,6 +35,7 @@
           <div th:if="${nombreCompleto != null}"
             class="d-flex align-items-center ms-4 ps-3 border-start border-secondary">
             <span class="me-4 saludo-usuario">Bienvenido(a), <strong th:text="${nombreCompleto}">Usuario</strong></span>
+            <a th:href="@{/panel}" class="btn btn-outline-success btn-sm me-2">Panel</a>
             <a th:href="@{/logout}" class="btn btn-outline-danger btn-sm">Cerrar sesión</a>
           </div>
 

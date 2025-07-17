@@ -209,4 +209,7 @@ public class CitaService {
         return citaRepository.countByEstado(estado);
     }
 
+    public List<Cita> buscarPorCliente(Cliente cliente) {
+    return citaRepository.findByCliente(cliente);
+}
 }

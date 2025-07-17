@@ -95,7 +95,8 @@
             display: flex;
             justify-content: center;
             margin-bottom: 2rem;
-            flex-wrap: wrap; /* Permite que se ajusten en pantallas pequeñas */
+            flex-wrap: wrap;
+            /* Permite que se ajusten en pantallas pequeñas */
             gap: 10px;
         }
 
@@ -240,6 +241,7 @@
             .col-md-6 {
                 width: 50%;
             }
+
             .col-md-8 {
                 width: 66.66667%;
             }
@@ -258,6 +260,11 @@
                 justify-content: space-between;
             }
         }
+        input[disabled] {
+    background-color: #333 !important;
+    color: #aaa !important;
+    opacity: 1; /* evita que se vea más claro */
+}
 
     </style>
 </head>
@@ -300,31 +307,25 @@
                     </div>
                     <div class="card-body">
                         <form th:action="@{/citas/paso1}" method="post" th:object="${cliente}">
+                            <input type="text" th:field="*{id}" hidden>
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="nombre" class="form-label">Nombre *</label>
-                                    <input type="text" class="form-control" id="nombre" th:field="*{nombre}" required>
-                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('nombre')}"
-                                        th:errors="*{nombre}"></div>
+                                    <input type="text" class="form-control" id="nombre" th:field="*{nombre}" readonly >
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="apellido" class="form-label">Apellido *</label>
-                                    <input type="text" class="form-control" id="apellido" th:field="*{apellido}" required>
-                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('apellido')}"
-                                        th:errors="*{apellido}"></div>
+                                    <input type="text" class="form-control" id="apellido" th:field="*{apellido}"
+                                        readonly >
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email *</label>
-                                <input type="email" class="form-control" id="email" th:field="*{email}" required>
-                                <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}"
-                                    th:errors="*{email}"></div>
+                                <input type="email" class="form-control" id="email" th:field="*{email}" readonly >
                             </div>
                             <div class="mb-3">
                                 <label for="telefono" class="form-label">Teléfono *</label>
-                                <input type="tel" class="form-control" id="telefono" th:field="*{telefono}" required>
-                                <div class="invalid-feedback" th:if="${#fields.hasErrors('telefono')}"
-                                    th:errors="*{telefono}"></div>
+                                <input type="tel" class="form-control" id="telefono" th:field="*{telefono}" readonly > 
                             </div>
                             <div class="btn-group-responsive">
                                 <a href="/" class="btn btn-secondary">
@@ -335,12 +336,13 @@
                                 </button>
                             </div>
                         </form>
+
                     </div>
                 </div>
             </div>
         </div>
     </main>
-  <script src="/js/tema.js"></script>
+    <script src="/js/tema.js"></script>
 </body>
 
 </html>

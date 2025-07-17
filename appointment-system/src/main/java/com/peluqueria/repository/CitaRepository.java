@@ -3,6 +3,7 @@ package com.peluqueria.repository;
 
 import com.peluqueria.entity.Cita;
 import com.peluqueria.entity.Cita.EstadoCita;
+import com.peluqueria.entity.Cliente;
 import com.peluqueria.entity.Peluquero;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -34,4 +35,6 @@ public interface CitaRepository extends JpaRepository<Cita, Long> {
 
 
     List<Cita> findByFechaHoraBetween(LocalDateTime atStartOfDay, LocalDateTime atStartOfDay2);
+
+    List<Cita> findByCliente(Cliente cliente);
 }

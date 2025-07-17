@@ -48,4 +48,16 @@ public class ClienteService {
     public Cliente guardar(Cliente cliente) {
         return clienteRepository.save(cliente);
     }
+
+public void actualizarCliente(Cliente clienteForm) {
+    Cliente clienteActual = clienteRepository.findById(clienteForm.getId())
+        .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
+
+    // Mantener campos que no deben cambiar si no se tocan en el formulario
+    clienteForm.setPassword(clienteActual.getPassword());
+    clienteForm.setRol(clienteActual.getRol());
+
+    clienteRepository.save(clienteForm);
+}
+
 }
