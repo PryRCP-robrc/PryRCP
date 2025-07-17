@@ -48,6 +48,9 @@ public class Cliente {
     @Column(name = "fecha_nacimiento")
     private LocalDate fechaNacimiento;
 
+    @Column(length = 255)
+    private String direccion;
+
     @Column(name = "genero")
     private String genero;
 
@@ -119,6 +122,14 @@ public class Cliente {
 
     public void setFechaNacimiento(LocalDate fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
     }
 
     public String getGenero() {
