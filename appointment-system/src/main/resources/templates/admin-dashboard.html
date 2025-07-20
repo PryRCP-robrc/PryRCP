@@ -156,7 +156,7 @@
                         <input type="text" id="busquedaCliente" class="form-control"
                             placeholder="Buscar por cliente...">
                         <input type="date" id="busquedaFecha" class="form-control"
-                            placeholder="Buscar por fecha (dd/MM/yyyy)...">    
+                            placeholder="Buscar por fecha (dd/MM/yyyy)...">
                     </div>
                     <div class="card-body table-responsive">
                         <table class="table table-striped" id="tablaCitas">
@@ -258,6 +258,18 @@
                                 <li class="list-group-item"><strong>Fecha:</strong> <span
                                         th:text="${#temporals.format(citaEncontrada.fechaHora, 'dd/MM/yyyy HH:mm')}"></span>
                                 </li>
+                                <li class="list-group-item"><strong>Peluquero</strong>
+                                    <span th:text="${citaEncontrada.peluquero.nombreCompleto}"></span>
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Servicios:</strong>
+                                    <ul>
+                                        <li th:each="detalle : ${citaEncontrada.detalles}"
+                                            th:text="${detalle.servicio.nombre}">
+                                        </li>
+                                    </ul>
+                                </li>
+
                                 <li class="list-group-item">
                                     <strong>Estado:</strong>
                                     <span th:text="${citaEncontrada.estado}" th:classappend="'badge px-2 py-1 text-white ' + (
@@ -562,34 +574,34 @@
             <p class="mb-0">&copy; 2025 Rossy. Todos los derechos reservados.</p>
         </div>
     </footer>
-    
 
-<script>
-    // Filtro por nombre de cliente y fecha en historial de citas
-    document.addEventListener('DOMContentLoaded', function () {
-        const inputCliente = document.getElementById('busquedaCliente');
-        const inputFecha = document.getElementById('busquedaFecha');
-        function filtrar() {
-            const filtroCliente = inputCliente.value.toLowerCase();
-            const filtroFecha = inputFecha.value;
-            document.querySelectorAll('#tablaCitas tbody tr').forEach(tr => {
-                const nombreCliente = tr.children[1].textContent.toLowerCase();
-                const fechaTexto = tr.children[3].textContent; // dd/MM/yyyy HH:mm
-                let coincideCliente = nombreCliente.includes(filtroCliente);
-                let coincideFecha = true;
-                if (filtroFecha) {
-                    // Formato fecha input: yyyy-MM-dd, formato tabla: dd/MM/yyyy
-                    const [dia, mes, anio] = fechaTexto.split(' ')[0].split('/');
-                    const fechaTabla = `${anio}-${mes.padStart(2, '0')}-${dia.padStart(2, '0')}`;
-                    coincideFecha = fechaTabla === filtroFecha;
-                }
-                tr.style.display = (coincideCliente && coincideFecha) ? '' : 'none';
-            });
-        }
-        if (inputCliente) inputCliente.addEventListener('keyup', filtrar);
-        if (inputFecha) inputFecha.addEventListener('change', filtrar);
-    });
-</script>
+
+    <script>
+        // Filtro por nombre de cliente y fecha en historial de citas
+        document.addEventListener('DOMContentLoaded', function () {
+            const inputCliente = document.getElementById('busquedaCliente');
+            const inputFecha = document.getElementById('busquedaFecha');
+            function filtrar() {
+                const filtroCliente = inputCliente.value.toLowerCase();
+                const filtroFecha = inputFecha.value;
+                document.querySelectorAll('#tablaCitas tbody tr').forEach(tr => {
+                    const nombreCliente = tr.children[1].textContent.toLowerCase();
+                    const fechaTexto = tr.children[3].textContent; // dd/MM/yyyy HH:mm
+                    let coincideCliente = nombreCliente.includes(filtroCliente);
+                    let coincideFecha = true;
+                    if (filtroFecha) {
+                        // Formato fecha input: yyyy-MM-dd, formato tabla: dd/MM/yyyy
+                        const [dia, mes, anio] = fechaTexto.split(' ')[0].split('/');
+                        const fechaTabla = `${anio}-${mes.padStart(2, '0')}-${dia.padStart(2, '0')}`;
+                        coincideFecha = fechaTabla === filtroFecha;
+                    }
+                    tr.style.display = (coincideCliente && coincideFecha) ? '' : 'none';
+                });
+            }
+            if (inputCliente) inputCliente.addEventListener('keyup', filtrar);
+            if (inputFecha) inputFecha.addEventListener('change', filtrar);
+        });
+    </script>
 
     <script>
         function showSection(id) {
