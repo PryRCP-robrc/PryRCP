@@ -324,7 +324,7 @@
                                     <td>
                                         <div class="btn-group">
                                             <button class="btn btn-sm btn-warning"
-                                                th:attr="onclick=|abrirModalEditar(${p.id}, '${p.nombre}', '${p.apellido}', '${p.especialidad}')|">
+                                                th:attr="onclick=|abrirModalEditar(${p.id}, '${p.nombre}', '${p.apellido}', '${p.especialidad}', '${p.activo}')|">
                                                 <i class="fas fa-edit"></i>
                                             </button>
                                             <a th:href="@{'/admin/dashboard/peluquero/eliminar/' + ${p.id}}"
@@ -494,6 +494,14 @@
                             <input type="text" class="form-control" name="especialidad" id="especialidadPeluquero"
                                 required>
                         </div>
+                        <div class="mb-3">
+                            <label for="activoPeluquero" class="form-label">¿Activo?</label>
+                            <select class="form-control" name="activo" id="activoPeluquero" required>
+                                <option value="true">Sí</option>
+                                <option value="false">No</option>
+                            </select>
+                        </div>
+
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">Guardar</button>
@@ -672,19 +680,23 @@
             document.getElementById('nombrePeluquero').value = '';
             document.getElementById('apellidoPeluquero').value = '';
             document.getElementById('especialidadPeluquero').value = '';
+            document.getElementById('activoPeluquero').value = 'true'; // Nuevo campo
             new bootstrap.Modal(document.getElementById('modalPeluquero')).show();
         }
 
 
-        function abrirModalEditar(id, nombre, apellido, especialidad) {
+
+        function abrirModalEditar(id, nombre, apellido, especialidad, activo) {
             document.getElementById('tituloModal').innerText = 'Editar Peluquero';
             document.getElementById('formPeluquero').action = '/admin/dashboard/peluquero/' + id;
             document.getElementById('peluqueroId').value = id;
             document.getElementById('nombrePeluquero').value = nombre;
             document.getElementById('apellidoPeluquero').value = apellido;
             document.getElementById('especialidadPeluquero').value = especialidad;
+            document.getElementById('activoPeluquero').value = activo ? 'true' : 'false'; // Nuevo campo
             new bootstrap.Modal(document.getElementById('modalPeluquero')).show();
         }
+
 
 
     </script>
