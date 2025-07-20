@@ -57,11 +57,11 @@ public class Cliente {
     @Column(nullable = false)
     private String password;
 
-    //PELUQUERO
+    //CAMPOS DE PELUQUERO
     @Column(columnDefinition = "TEXT")
     private String especialidad;
 
-    @Column(nullable = false)
+    @Column(name = "activo")
     private Boolean activo = true;
 
     //Relaciones con otras entidades
