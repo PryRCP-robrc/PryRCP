@@ -309,6 +309,7 @@
                                     <th>Nombre</th>
                                     <th>Apellido</th>
                                     <th>Especialidad</th>
+                                    <th>Activo</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -317,6 +318,9 @@
                                     <td th:text="${p.nombre}">Nombre</td>
                                     <td th:text="${p.apellido}">Apellido</td>
                                     <td th:text="${p.especialidad}">Especialidad</td>
+                                    <td><i class="fas"
+                                            th:classappend="${p.activo} ? 'fa-check-circle text-success' : 'fa-times-circle text-danger'"></i>
+                                    </td>
                                     <td>
                                         <div class="btn-group">
                                             <button class="btn btn-sm btn-warning"
@@ -358,7 +362,18 @@
                                 <tr>
                                     <th>Nombre</th>
                                     <th>Descripción</th>
-                                    <th>Precio</th>
+                                    <th>
+                                        Precio
+                                        <button class="btn btn-link p-0" onclick="ordenarPorPrecio('asc')"
+                                            title="Menor a mayor">
+                                            <i class="fas fa-sort-amount-down-alt"></i>
+                                        </button>
+                                        <button class="btn btn-link p-0" onclick="ordenarPorPrecio('desc')"
+                                            title="Mayor a menor">
+                                            <i class="fas fa-sort-amount-up-alt"></i>
+                                        </button>
+                                    </th>
+
                                     <th>Duración</th>
                                     <th>Activo</th>
                                     <th>Acciones</th>
@@ -574,6 +589,23 @@
             <p class="mb-0">&copy; 2025 Rossy. Todos los derechos reservados.</p>
         </div>
     </footer>
+
+    <script>
+        function ordenarPorPrecio(direccion) {
+            const tabla = document.querySelector("#servicios table tbody");
+            const filas = Array.from(tabla.querySelectorAll("tr"));
+
+            filas.sort((a, b) => {
+                const precioA = parseFloat(a.cells[2].innerText.trim());
+                const precioB = parseFloat(b.cells[2].innerText.trim());
+                return direccion === 'asc' ? precioA - precioB : precioB - precioA;
+            });
+
+            // Vacía la tabla y reordena
+            tabla.innerHTML = '';
+            filas.forEach(fila => tabla.appendChild(fila));
+        }
+    </script>
 
 
     <script>
