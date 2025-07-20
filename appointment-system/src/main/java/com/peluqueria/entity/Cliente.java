@@ -57,6 +57,14 @@ public class Cliente {
     @Column(nullable = false)
     private String password;
 
+    //PELUQUERO
+    @Column(columnDefinition = "TEXT")
+    private String especialidad;
+
+    @Column(nullable = false)
+    private Boolean activo = true;
+
+    //Relaciones con otras entidades
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "rol_id")
     private Rol rol;
@@ -167,4 +175,22 @@ public class Cliente {
     public String getNombreCompleto() {
         return nombre + " " + apellido;
     }
+
+    public String getEspecialidad() {
+        return especialidad;
+    }
+
+    public void setEspecialidad(String especialidad) {
+        this.especialidad = especialidad;
+    }
+
+    public Boolean getActivo() {
+        return activo;
+    }
+
+    public void setActivo(Boolean activo) {
+        this.activo = activo;
+    }
+
+    
 }
