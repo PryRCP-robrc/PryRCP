@@ -31,11 +31,11 @@ public class Cita {
     @JoinColumn(name = "cliente_id", nullable = false)
     private Cliente cliente;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "peluquero_id", nullable = false)
     private Peluquero peluquero;
     
-    @OneToMany(mappedBy = "cita", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "cita", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<DetalleCita> detalles;
     
     @OneToOne(mappedBy = "cita", cascade = CascadeType.ALL)
