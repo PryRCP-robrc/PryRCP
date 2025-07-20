@@ -65,7 +65,7 @@ public class AdminController {
         model.addAttribute("citas", citas);
 
 
-        List<Peluquero> peluqueros = peluqueroService.obtenerPeluquerosActivos();
+        List<Peluquero> peluqueros = peluqueroService.obtenerTodos();
         model.addAttribute("peluqueros", peluqueros);
 
 
@@ -124,22 +124,23 @@ public class AdminController {
 
 
     // Crear Peluquero
-    @PostMapping("/dashboard/peluquero")
-    public String crearPeluquero(@RequestParam String nombre,
-            @RequestParam String apellido,
-            @RequestParam String especialidad,
-            RedirectAttributes redirectAttributes) {
-        Peluquero nuevo = new Peluquero();
-        nuevo.setNombre(nombre);
-        nuevo.setApellido(apellido);
-        nuevo.setEspecialidad(especialidad);
-        nuevo.setActivo(true);
+@PostMapping("/dashboard/peluquero")
+public String crearPeluquero(@RequestParam String nombre,
+                             @RequestParam String apellido,
+                             @RequestParam String especialidad,
+                             @RequestParam Boolean activo,
+                             RedirectAttributes redirectAttributes) {
+    Peluquero nuevo = new Peluquero();
+    nuevo.setNombre(nombre);
+    nuevo.setApellido(apellido);
+    nuevo.setEspecialidad(especialidad);
+    nuevo.setActivo(Boolean.TRUE.equals(activo)); // Seguridad ante null
 
+    peluqueroService.crear(nuevo);
+    redirectAttributes.addFlashAttribute("mensajePeluquero", "Peluquero creado correctamente");
+    return "redirect:/admin/dashboard#peluqueros";
+}
 
-        peluqueroService.crear(nuevo);
-        redirectAttributes.addFlashAttribute("mensajePeluquero", "Peluquero creado correctamente");
-        return "redirect:/admin/dashboard#peluqueros";
-    }
 
 
     // Actualizar Peluquero
