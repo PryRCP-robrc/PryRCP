@@ -14,7 +14,7 @@ public class DetalleCita {
     @JoinColumn(name = "cita_id", nullable = false)
     private Cita cita;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "servicio_id", nullable = false)
     private Servicio servicio;
     
