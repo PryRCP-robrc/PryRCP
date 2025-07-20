@@ -35,7 +35,7 @@ public class PeluqueroService {
     // Crear un nuevo peluquero
     public Peluquero crear (Peluquero peluquero){
         peluquero.setId(null);
-        peluquero.setActivo(true);
+        
         return peluqueroRepository.save(peluquero);
     }
 
