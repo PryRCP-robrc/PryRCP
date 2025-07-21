@@ -46,6 +46,10 @@ public class PeluqueroService {
             peluquero.setNombre(datosActualizados.getNombre());
             peluquero.setApellido(datosActualizados.getApellido());
             peluquero.setEspecialidad(datosActualizados.getEspecialidad());
+            peluquero.setTelefono(datosActualizados.getTelefono());
+            peluquero.setGenero(datosActualizados.getGenero());
+            peluquero.setFechaNacimiento(datosActualizados.getFechaNacimiento());
+            peluquero.setNumeroDocumento(datosActualizados.getNumeroDocumento());
             peluquero.setActivo(datosActualizados.getActivo());
             return peluqueroRepository.save(peluquero);
         });

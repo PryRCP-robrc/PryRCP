@@ -309,6 +309,10 @@
                                     <th>Nombre</th>
                                     <th>Apellido</th>
                                     <th>Especialidad</th>
+                                    <th>Teléfono</th>
+                                    <th>Género</th>
+                                    <th>F. Nacimiento</th>
+                                    <th>DNI</th>
                                     <th>Activo</th>
                                     <th>Acciones</th>
                                 </tr>
@@ -318,13 +322,17 @@
                                     <td th:text="${p.nombre}">Nombre</td>
                                     <td th:text="${p.apellido}">Apellido</td>
                                     <td th:text="${p.especialidad}">Especialidad</td>
+                                    <td th:text="${p.telefono}">Teléfono</td>
+                                    <td th:text="${p.genero}">Género</td>
+                                    <td th:text="${p.fechaNacimiento}">Fecha Nacimiento</td>
+                                    <td th:text="${p.numeroDocumento}">DNI</td>
                                     <td><i class="fas"
                                             th:classappend="${p.activo} ? 'fa-check-circle text-success' : 'fa-times-circle text-danger'"></i>
                                     </td>
                                     <td>
                                         <div class="btn-group">
                                             <button class="btn btn-sm btn-warning"
-                                                th:attr="onclick=|abrirModalEditar(${p.id}, '${p.nombre}', '${p.apellido}', '${p.especialidad}', '${p.activo}')|">
+                                                th:attr="onclick=|abrirModalEditar(${p.id}, '${p.nombre}', '${p.apellido}', '${p.especialidad}', '${p.telefono}', '${p.genero}', '{p.fechaNacimiento}', '{p.numeroDocumento}', '${p.activo}')|">
                                                 <i class="fas fa-edit"></i>
                                             </button>
                                             <a th:href="@{'/admin/dashboard/peluquero/eliminar/' + ${p.id}}"
@@ -491,8 +499,28 @@
                         </div>
                         <div class="mb-3">
                             <label for="especialidadPeluquero" class="form-label">Especialidad</label>
-                            <input type="text" class="form-control" name="especialidad" id="especialidadPeluquero"
-                                required>
+                            <input type="text" class="form-control" name="especialidad" id="telefonoPeluquero" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="telefonoPeluquero" class="form-label">Teléfono</label>
+                            <input type="text" class="form-control" name="telefono" id="especialidadPeluquero" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="generoPeluquero" class="form-label">Género</label>
+                            <select class="form-control" name="genero" id="generoPeluquero" required>
+                                <option value="">Seleccionar</option>
+                                <option value="MASCULINO">Masculino</option>
+                                <option value="FEMENINO">Femenino</option>
+                                <option value="OTRO">Otro</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="fechaNacimientoPeluquero" class="form-label">Fecha de Nacimiento</label>
+                            <input type="date" class="form-control" name="fechaNacimiento" id="fechaNacimientoPeluquero" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="numeroDocumentoPeluquero" class="form-label">Número de Documento (DNI)</label>
+                            <input type="text" class="form-control" name="numeroDocumento" id="numeroDocumentoPeluquero" maxlength="8" required>
                         </div>
                         <div class="mb-3">
                             <label for="activoPeluquero" class="form-label">¿Activo?</label>
@@ -680,6 +708,10 @@
             document.getElementById('nombrePeluquero').value = '';
             document.getElementById('apellidoPeluquero').value = '';
             document.getElementById('especialidadPeluquero').value = '';
+            document.getElementById('telefonoPeluquero').value = '';
+            document.getElementById('generoPeluquero').value = '';
+            document.getElementById('fechaNacimientoPeluquero').value = '';
+            document.getElementById('numeroDocumentoPeluquero').value = '';
             document.getElementById('activoPeluquero').value = 'true'; // Nuevo campo
             new bootstrap.Modal(document.getElementById('modalPeluquero')).show();
         }
@@ -693,6 +725,10 @@
             document.getElementById('nombrePeluquero').value = nombre;
             document.getElementById('apellidoPeluquero').value = apellido;
             document.getElementById('especialidadPeluquero').value = especialidad;
+            document.getElementById('telefonoPeluquero').value = telefono;
+            document.getElementById('generoPeluquero').value = genero;
+            document.getElementById('fechaNacimientoPeluquero').value = fechaNacimiento;
+            document.getElementById('numeroDocumentoPeluquero').value = numeroDocumento;
             document.getElementById('activoPeluquero').value = activo ? 'true' : 'false'; // Nuevo campo
             new bootstrap.Modal(document.getElementById('modalPeluquero')).show();
         }

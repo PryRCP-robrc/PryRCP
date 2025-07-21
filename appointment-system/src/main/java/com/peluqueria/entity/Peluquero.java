@@ -2,6 +2,8 @@ package com.peluqueria.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
@@ -27,7 +29,21 @@ public class Peluquero {
     
     @OneToMany(mappedBy = "peluquero", cascade = CascadeType.ALL)
     private Set<Cita> citas;
-    
+
+    //Campos adicionales
+    @NotBlank(message = "El teléfono es obligatorio")
+    @Column(nullable = false)
+    private String telefono;
+
+    @Column(name = "genero")
+    private String genero;
+
+    @Column(name = "fecha_nacimiento")
+    private LocalDate fechaNacimiento;
+
+    @Column(name = "numero_documento", length = 8)
+    private String numeroDocumento;
+
     // Constructors
     public Peluquero() {}
     
@@ -53,4 +69,17 @@ public class Peluquero {
     public String getNombreCompleto() {
         return nombre + " " + apellido;
     }
+
+    public String getGenero() { return genero; }
+    public void setGenero(String genero) { this.genero = genero; }
+
+    public String getTelefono() { return telefono; }
+    public void setTelefono(String telefono) { this.telefono = telefono; }
+
+    public LocalDate getFechaNacimiento() { return fechaNacimiento; }
+    public void setFechaNacimiento(LocalDate fechaNacimiento) { this.fechaNacimiento = fechaNacimiento; }
+
+    public String getNumeroDocumento() { return numeroDocumento; }
+    public void setNumeroDocumento(String numeroDocumento) { this.numeroDocumento = numeroDocumento; }
+
 }

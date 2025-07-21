@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -128,12 +129,21 @@ public class AdminController {
 public String crearPeluquero(@RequestParam String nombre,
                              @RequestParam String apellido,
                              @RequestParam String especialidad,
+                             @RequestParam String telefono,                                         
+                             @RequestParam String genero,
+                             @RequestParam LocalDate fechaNacimiento,
+                             @RequestParam String numeroDocumento,
+
                              @RequestParam Boolean activo,
                              RedirectAttributes redirectAttributes) {
     Peluquero nuevo = new Peluquero();
     nuevo.setNombre(nombre);
     nuevo.setApellido(apellido);
     nuevo.setEspecialidad(especialidad);
+    nuevo.setTelefono(telefono);
+    nuevo.setGenero(genero);
+    nuevo.setFechaNacimiento(fechaNacimiento);
+    nuevo.setNumeroDocumento(numeroDocumento);
     nuevo.setActivo(Boolean.TRUE.equals(activo)); // Seguridad ante null
 
     peluqueroService.crear(nuevo);
@@ -149,12 +159,20 @@ public String crearPeluquero(@RequestParam String nombre,
             @RequestParam String nombre,
             @RequestParam String apellido,
             @RequestParam String especialidad,
+            @RequestParam String telefono,
+            @RequestParam String genero,
+            @RequestParam LocalDate fechaNacimiento,
+            @RequestParam String numeroDocumento,
             @RequestParam(required = false, defaultValue = "true") boolean activo,
             RedirectAttributes redirectAttributes) {
         Peluquero actualizado = new Peluquero();
         actualizado.setNombre(nombre);
         actualizado.setApellido(apellido);
         actualizado.setEspecialidad(especialidad);
+        actualizado.setTelefono(telefono);
+        actualizado.setGenero(genero);
+        actualizado.setFechaNacimiento(fechaNacimiento);
+        actualizado.setNumeroDocumento(numeroDocumento);
         actualizado.setActivo(activo);
 
 
