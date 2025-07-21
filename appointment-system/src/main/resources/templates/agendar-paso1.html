@@ -281,6 +281,7 @@
             </div>
         </div>
     </nav>
+
     <main>
         <div class="row justify-content-center">
             <div class="col-md-8">
@@ -295,52 +296,49 @@
                 <div class="card">
                     <div class="card-header">
                         <h4 class="mb-0">
-                            <i class="fas fa-user"></i> Paso 1: Datos Personales
+                            <i class="fas fa-user"></i> Paso 1: Confirmar Datos Personales
                         </h4>
                     </div>
                     <div class="card-body">
-                        <form th:action="@{/citas/paso1}" method="post" th:object="${cliente}">
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="nombre" class="form-label">Nombre *</label>
-                                    <input type="text" class="form-control" id="nombre" th:field="*{nombre}" required>
-                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('nombre')}"
-                                        th:errors="*{nombre}"></div>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="apellido" class="form-label">Apellido *</label>
-                                    <input type="text" class="form-control" id="apellido" th:field="*{apellido}" required>
-                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('apellido')}"
-                                        th:errors="*{apellido}"></div>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email *</label>
-                                <input type="email" class="form-control" id="email" th:field="*{email}" required>
-                                <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}"
-                                    th:errors="*{email}"></div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="telefono" class="form-label">Teléfono *</label>
-                                <input type="tel" class="form-control" id="telefono" th:field="*{telefono}" required>
-                                <div class="invalid-feedback" th:if="${#fields.hasErrors('telefono')}"
-                                    th:errors="*{telefono}"></div>
-                            </div>
-                            <div class="btn-group-responsive">
-                                <a href="/" class="btn btn-secondary">
-                                    <i class="fas fa-arrow-left"></i> Cancelar
-                                </a>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Nombre:</label>
+                            <div th:text="${cliente.nombre}">Juan</div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Apellido:</label>
+                            <div th:text="${cliente.apellido}">Pérez</div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Email:</label>
+                            <div th:text="${cliente.email}">juan@example.com</div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Teléfono:</label>
+                            <div th:text="${cliente.telefono}">987654321</div>
+                        </div>
+
+                        <div class="btn-group-responsive mt-4">
+                            <a href="/" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Cancelar
+                            </a>
+                            <form th:action="@{/citas/paso1}" method="post" th:object="${cliente}" style="display:inline;">
+                                <input type="hidden" th:field="*{nombre}">
+                                <input type="hidden" th:field="*{apellido}">
+                                <input type="hidden" th:field="*{email}">
+                                <input type="hidden" th:field="*{telefono}">
                                 <button type="submit" class="btn btn-primary">
                                     Siguiente <i class="fas fa-arrow-right"></i>
                                 </button>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
-  <script src="/js/tema.js"></script>
+
+    <script src="/js/tema.js"></script>
 </body>
+
 
 </html>
