@@ -290,6 +290,51 @@
             color: #222;
             text-shadow: none;
         }
+
+        /* Estilo para select en modo oscuro */
+        select.form-control,
+        select {
+            background-color: #333;
+            color: #eee;
+            border: 1px solid #555;
+            transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+        }
+
+        select.form-control:focus,
+        select:focus {
+            background-color: #444;
+            border-color: #ff69b4;
+            color: white;
+            outline: none;
+            box-shadow: 0 0 5px #ff69b4;
+        }
+
+        /* Opciones del select en modo oscuro */
+        option {
+            background-color: #333;
+            color: #eee;
+        }
+
+        /* Modo claro para select */
+        body.light-mode select.form-control,
+        body.light-mode select {
+            background-color: white;
+            color: #222;
+            border: 1px solid #ccc;
+        }
+
+        body.light-mode select.form-control:focus,
+        body.light-mode select:focus {
+            background-color: white;
+            border-color: #8e24aa;
+            color: #222;
+            box-shadow: 0 0 5px #8e24aa;
+        }
+
+        body.light-mode option {
+            background-color: white;
+            color: #222;
+        }
     </style>
 </head>
 
