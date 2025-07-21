@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.peluqueria.entity.Cita;
+import com.peluqueria.entity.Cita.EstadoCita;
 import com.peluqueria.entity.Cliente;
 import com.peluqueria.entity.CustomUserDetails;
 import com.peluqueria.entity.Peluquero;
@@ -74,9 +75,9 @@ public class CitaController {
 
     @PostMapping("/paso1")
     public String procesarPaso1(@Valid @ModelAttribute Cliente cliente,
-                                 BindingResult result,
-                                 HttpSession session,
-                                 Model model) {
+            BindingResult result,
+            HttpSession session,
+            Model model) {
         if (result.hasErrors()) {
             return "agendar-paso1";
         }
@@ -91,8 +92,8 @@ public class CitaController {
 
     @PostMapping("/paso2")
     public String procesarPaso2(@RequestParam List<Long> serviciosIds,
-                                 HttpSession session,
-                                 Model model) {
+            HttpSession session,
+            Model model) {
         if (serviciosIds == null || serviciosIds.isEmpty()) {
             model.addAttribute("error", "Debe seleccionar al menos un servicio");
             model.addAttribute("servicios", servicioService.obtenerServiciosActivos());
@@ -113,8 +114,8 @@ public class CitaController {
 
     @PostMapping("/paso3")
     public String procesarPaso3(@RequestParam Long peluqueroId,
-                                 HttpSession session,
-                                 Model model) {
+            HttpSession session,
+            Model model) {
         Peluquero peluquero = peluqueroService.buscarPorId(peluqueroId)
                 .orElseThrow(() -> new RuntimeException("Peluquero no encontrado"));
 
@@ -125,9 +126,9 @@ public class CitaController {
 
     @PostMapping("/paso4")
     public String procesarPaso4(@RequestParam String fecha,
-                                 @RequestParam String hora,
-                                 HttpSession session,
-                                 Model model) {
+            @RequestParam String hora,
+            HttpSession session,
+            Model model) {
         try {
             LocalDateTime fechaHora = LocalDateTime.parse(fecha + "T" + hora + ":00");
             session.setAttribute("fechaHoraSeleccionada", fechaHora);
@@ -193,11 +194,24 @@ public class CitaController {
             Cita cita = citaService.buscarPorCodigo(codigoCita)
                     .orElseThrow(() -> new RuntimeException("Cita no encontrada"));
 
+            // No permitir descarga si está cancelada
+            if (cita.getEstado() == EstadoCita.CANCELADA) {
+                return ResponseEntity.status(403).build();
+            }
+
             byte[] pdfBytes = pdfService.generarComprobantePDF(cita);
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_PDF);
-            headers.setContentDispositionFormData("attachment", "comprobante-" + codigoCita + ".pdf");
+
+            String nombreArchivo;
+            if (cita.getEstado() == EstadoCita.TERMINADA && cita.getBoleta() != null) {
+                nombreArchivo = "boleta-" + cita.getBoleta().getNumero() + ".pdf";
+            } else {
+                nombreArchivo = "comprobante-" + codigoCita + ".pdf";
+            }
+
+            headers.setContentDispositionFormData("attachment", nombreArchivo);
 
             return ResponseEntity.ok()
                     .headers(headers)
@@ -207,4 +221,5 @@ public class CitaController {
             return ResponseEntity.notFound().build();
         }
     }
+
 }
