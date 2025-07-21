@@ -209,4 +209,8 @@ public class CitaService {
         return citaRepository.countByEstado(estado);
     }
 
+        public List<Cita> obtenerCitasPorCliente(Long clienteId) {
+        return citaRepository.findByClienteId(clienteId);
+    }
+
 }
