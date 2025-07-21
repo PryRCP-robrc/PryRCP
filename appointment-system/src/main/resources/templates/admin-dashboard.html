@@ -144,6 +144,14 @@
                         </div>
                     </div>
                 </div>
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h5><i class="fas fa-chart-bar"></i> Estadísticas de Citas</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="graficoCitas"></canvas>
+                    </div>
+                </div>
 
 
             </div>
@@ -195,7 +203,6 @@
                                                     </button>
                                                 </form>
 
-
                                                 <!-- Cancelar -->
                                                 <form th:action="@{'/admin/cambiar-estado/' + ${cita.id}}" method="post"
                                                     style="display:inline;">
@@ -207,13 +214,20 @@
                                                 </form>
                                             </div>
 
-
-                                            <a th:href="@{'/citas/comprobante/' + ${cita.codigoUnico}}"
+                                            <!-- PDF: enlace o botón deshabilitado según estado -->
+                                            <a th:if="${cita.estado.name()} != 'CANCELADA'"
+                                                th:href="@{'/citas/comprobante/' + ${cita.codigoUnico}}"
                                                 class="btn btn-sm btn-outline-primary">
                                                 <i class="fas fa-download"></i> PDF
                                             </a>
+
+                                            <button th:if="${cita.estado.name()} == 'CANCELADA'"
+                                                class="btn btn-sm btn-outline-primary" disabled>
+                                                <i class="fas fa-download"></i> PDF
+                                            </button>
                                         </div>
                                     </td>
+
                                 </tr>
                             </tbody>
                         </table>
@@ -332,7 +346,7 @@
                                     <td>
                                         <div class="btn-group">
                                             <button class="btn btn-sm btn-warning"
-                                                th:attr="onclick=|abrirModalEditar(${p.id}, '${p.nombre}', '${p.apellido}', '${p.especialidad}', '${p.telefono}', '${p.genero}', '{p.fechaNacimiento}', '{p.numeroDocumento}', '${p.activo}')|">
+                                                th:attr="onclick=|abrirModalEditar(${p.id}, '${p.nombre}', '${p.apellido}', '${p.especialidad}', '${p.telefono}', '${p.genero}', '${p.fechaNacimiento}', '${p.numeroDocumento}', '${p.activo}')|">
                                                 <i class="fas fa-edit"></i>
                                             </button>
                                             <a th:href="@{'/admin/dashboard/peluquero/eliminar/' + ${p.id}}"
@@ -499,11 +513,12 @@
                         </div>
                         <div class="mb-3">
                             <label for="especialidadPeluquero" class="form-label">Especialidad</label>
-                            <input type="text" class="form-control" name="especialidad" id="telefonoPeluquero" required>
+                            <input type="text" class="form-control" name="especialidad" id="especialidadPeluquero"
+                                required>
                         </div>
                         <div class="mb-3">
                             <label for="telefonoPeluquero" class="form-label">Teléfono</label>
-                            <input type="text" class="form-control" name="telefono" id="especialidadPeluquero" required>
+                            <input type="text" class="form-control" name="telefono" id="telefonoPeluquero" required>
                         </div>
                         <div class="mb-3">
                             <label for="generoPeluquero" class="form-label">Género</label>
@@ -516,11 +531,13 @@
                         </div>
                         <div class="mb-3">
                             <label for="fechaNacimientoPeluquero" class="form-label">Fecha de Nacimiento</label>
-                            <input type="date" class="form-control" name="fechaNacimiento" id="fechaNacimientoPeluquero" required>
+                            <input type="date" class="form-control" name="fechaNacimiento" id="fechaNacimientoPeluquero"
+                                required>
                         </div>
                         <div class="mb-3">
                             <label for="numeroDocumentoPeluquero" class="form-label">Número de Documento (DNI)</label>
-                            <input type="text" class="form-control" name="numeroDocumento" id="numeroDocumentoPeluquero" maxlength="8" required>
+                            <input type="text" class="form-control" name="numeroDocumento" id="numeroDocumentoPeluquero"
+                                maxlength="8" required>
                         </div>
                         <div class="mb-3">
                             <label for="activoPeluquero" class="form-label">¿Activo?</label>
@@ -626,6 +643,52 @@
         </div>
     </footer>
 
+    <!-- Incluye Chart.js primero -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Script con datos de Thymeleaf -->
+    <script th:inline="javascript">
+        const total = [[${ totalCitas }]];
+        const terminadas = [[${ citasTerminadas }]];
+        const programadas = [[${ citasProgramadas }]];
+        const canceladas = [[${ citasCanceladas }]];
+
+        const ctx = document.getElementById('graficoCitas').getContext('2d');
+
+        const graficoCitas = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Totales', 'Terminadas', 'Programadas', 'Canceladas'],
+                datasets: [{
+                    label: 'Cantidad de Citas',
+                    data: [total, terminadas, programadas, canceladas],
+                    backgroundColor: [
+                        'rgba(13, 110, 253, 0.7)', // azul
+                        'rgba(25, 135, 84, 0.7)',  // verde
+                        'rgba(255, 193, 7, 0.7)',  // amarillo
+                        'rgba(220, 53, 69, 0.7)'   // rojo
+                    ],
+                    borderColor: [
+                        'rgba(13, 110, 253, 1)',
+                        'rgba(25, 135, 84, 1)',
+                        'rgba(255, 193, 7, 1)',
+                        'rgba(220, 53, 69, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+
+
     <script>
         function ordenarPorPrecio(direccion) {
             const tabla = document.querySelector("#servicios table tbody");
@@ -718,7 +781,7 @@
 
 
 
-        function abrirModalEditar(id, nombre, apellido, especialidad, activo) {
+        function abrirModalEditar(id, nombre, apellido, especialidad, telefono, genero, fechaNacimiento, numeroDocumento, activo) {
             document.getElementById('tituloModal').innerText = 'Editar Peluquero';
             document.getElementById('formPeluquero').action = '/admin/dashboard/peluquero/' + id;
             document.getElementById('peluqueroId').value = id;
@@ -729,9 +792,11 @@
             document.getElementById('generoPeluquero').value = genero;
             document.getElementById('fechaNacimientoPeluquero').value = fechaNacimiento;
             document.getElementById('numeroDocumentoPeluquero').value = numeroDocumento;
-            document.getElementById('activoPeluquero').value = activo ? 'true' : 'false'; // Nuevo campo
+            document.getElementById('activoPeluquero').value = activo ? 'true' : 'false';
+
             new bootstrap.Modal(document.getElementById('modalPeluquero')).show();
         }
+
 
 
 
