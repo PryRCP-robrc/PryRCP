@@ -38,6 +38,13 @@ public class Cliente {
     @Column(unique = true, nullable = false)
     private String email;
 
+    //NUEVOS CAMPOS - DNI/PASAPORTE
+    @Column(name = "tipo_documento", length = 20)
+    private String tipoDocumento; // "DNI" o "Pasaporte"
+
+    @Column(name = "numero_documento", length = 20)
+    private String numeroDocumento;
+
     @NotBlank(message = "El teléfono es obligatorio")
     @Column(nullable = false)
     private String telefono;
@@ -166,5 +173,21 @@ public class Cliente {
 
     public String getNombreCompleto() {
         return nombre + " " + apellido;
+    }
+
+    public String getTipoDocumento() {
+        return tipoDocumento;
+    }
+
+    public void setTipoDocumento(String tipoDocumento) {
+        this.tipoDocumento = tipoDocumento;
+    }
+
+    public String getNumeroDocumento() {
+        return numeroDocumento;
+    }
+
+    public void setNumeroDocumento(String numeroDocumento) {
+        this.numeroDocumento = numeroDocumento;
     }
 }
