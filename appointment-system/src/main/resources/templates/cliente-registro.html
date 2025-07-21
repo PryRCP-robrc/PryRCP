@@ -331,6 +331,20 @@
                             pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" title="Solo letras y espacios" />
                     </div>
                     <div class="form-group mb-3">
+                        <label>Tipo de documento *</label>
+                        <select th:field="*{tipoDocumento}" class="form-control" id="tipoDocumento" required>
+                            <option value="" disabled selected>Seleccione...</option>
+                            <option value="DNI">DNI (Peruano)</option>
+                            <option value="Pasaporte">Pasaporte (Extranjero)</option>
+                        </select>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label id="labelNumeroDocumento">Número de documento *</label>
+                        <input type="text" th:field="*{numeroDocumento}" class="form-control" id="numeroDocumento"
+                            required pattern="^\d{8}$|^[A-Za-z0-9]{5,20}$"
+                            title="DNI: 8 dígitos. Pasaporte: 5-20 caracteres alfanuméricos." />
+                    </div>
+                    <div class="form-group mb-3">
                         <label>Correo Electrónico *</label>
                         <input type="email" th:field="*{email}" class="form-control" required />
                     </div>
@@ -452,6 +466,35 @@
             } else {
                 errorDiv.style.display = "none";
             }
+        });
+
+        // Cambia el label y patrón según el tipo de documento seleccionado
+        document.addEventListener('DOMContentLoaded', function () {
+            const tipoDoc = document.getElementById('tipoDocumento');
+            const numDoc = document.getElementById('numeroDocumento');
+            const labelNumDoc = document.getElementById('labelNumeroDocumento');
+
+            function actualizarDocumento() {
+                if (tipoDoc.value === 'DNI') {
+                    labelNumDoc.textContent = 'Número de DNI *';
+                    numDoc.pattern = '^\\d{8}$';
+                    numDoc.title = 'DNI: exactamente 8 dígitos';
+                    numDoc.maxLength = 8;
+                } else if (tipoDoc.value === 'Pasaporte') {
+                    labelNumDoc.textContent = 'Número de Pasaporte *';
+                    numDoc.pattern = '^[A-Za-z0-9]{5,20}$';
+                    numDoc.title = 'Pasaporte: 5 a 20 caracteres alfanuméricos';
+                    numDoc.maxLength = 20;
+                } else {
+                    labelNumDoc.textContent = 'Número de documento *';
+                    numDoc.pattern = '';
+                    numDoc.title = '';
+                    numDoc.removeAttribute('maxLength');
+                }
+            }
+
+            tipoDoc.addEventListener('change', actualizarDocumento);
+            actualizarDocumento();
         });
     </script>
 </body>
